@@ -569,9 +569,11 @@ select.form-input{cursor:pointer}
 // ══════════════════════════════════
 // CONFIG
 // ══════════════════════════════════
-const SUPABASE_URL = 'https://knpssuriglsglyr.supabase.co';
+const SUPABASE_URL = 'https://medtech-proxy.dehi467.workers.dev';
 const SUPABASE_KEY = 'sb_publishable_le4Tb4AXPlAtrXH3Y-foNA_Z4V2oRLX';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { flowType: 'pkce' }
+});
 
 // ══════════════════════════════════
 // STATE
