@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f1117">
+  <title>مدیریت مالی – تجهیزات پزشکی</title>
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+:root {
+  --bg:        #0f1117;
+  --bg1:       #181b24;
+  --bg2:       #1e2130;
+  --bg3:       #252a3a;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.13);
+
+  --txt:       #e8eaf0;
+  --txt2:      #9ba3b8;
+  --txt3:      #5c6480;
+
+  --accent:    #4f8ef7;
+  --accent-bg: rgba(79,142,247,0.12);
+  --accent-bd: rgba(79,142,247,0.3);
+
+  --green:     #34c97b;
+  --green-bg:  rgba(52,201,123,0.1);
+  --red:       #f05252;
+  --red-bg:    rgba(240,82,82,0.1);
+  --amber:     #f59e0b;
+  --amber-bg:  rgba(245,158,11,0.1);
+
+  --radius:    10px;
+  --radius-lg: 14px;
+  --sidebar:   220px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+  direction: rtl;
+  background: var(--bg);
+  color: var(--txt);
+  font-size: 14px;
+  min-height: 100vh;
+}
+
+/* ── LAYOUT ── */
+.shell { display: flex; height: 100vh; overflow: hidden; }
+
+.sidebar {
+  width: var(--sidebar);
+  flex-shrink: 0;
+  background: var(--bg1);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.logo {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.logo-mark {
+  width: 32px; height: 32px;
+  background: var(--accent);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: #fff; margin-bottom: 10px;
+}
+.logo-title { font-size: 13px; font-weight: 600; color: var(--txt); }
+.logo-sub   { font-size: 11px; color: var(--txt3); margin-top: 2px; }
+
+.nav-group-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  color: var(--txt3);
+  text-transform: uppercase;
+  padding: 16px 18px 6px;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 18px;
+  color: var(--txt2);
+  font-size: 13px;
+  cursor: pointer;
+  border: none; background: none; width: 100%; text-align: right;
+  border-radius: 0;
+  transition: color 0.15s, background 0.15s;
+}
+.nav-item i { font-size: 17px; flex-shrink: 0; }
+.nav-item:hover { color: var(--txt); background: var(--bg2); }
+.nav-item.active {
+  color: var(--accent);
+  background: var(--accent-bg);
+  font-weight: 500;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 14px 18px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── MAIN ── */
+.main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; background: var(--bg); }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg1);
+  position: sticky; top: 0; z-index: 10;
+  backdrop-filter: blur(8px);
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-title { font-size: 16px; font-weight: 600; color: var(--txt); }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.topbar-date { font-size: 12px; color: var(--txt3); }
+
+.sync-badge {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; padding: 4px 10px; border-radius: 20px;
+  border: 1px solid var(--border2); color: var(--txt2);
+  background: var(--bg2);
+}
+.sync-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--txt3); }
+.sync-badge.ok .sync-dot { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.sync-badge.err .sync-dot { background: var(--red); }
+.sync-badge.busy .sync-dot { background: var(--amber); animation: pulse 1s infinite; }
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: var(--radius);
+  font-size: 13px; font-family: inherit; cursor: pointer;
+  border: none; transition: 0.15s;
+}
+.btn-primary { background: var(--accent); color: #fff; font-weight: 500; }
+.btn-primary:hover { background: #6aa0f8; }
+.btn-ghost {
+  background: var(--bg2); color: var(--txt2);
+  border: 1px solid var(--border2);
+}
+.btn-ghost:hover { color: var(--txt); border-color: var(--border2); background: var(--bg3); }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+
+/* ── CONTENT ── */
+.content { padding: 24px; flex: 1; }
+
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── STATS ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+.stat-card {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  position: relative; overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 60px; height: 60px;
+  border-radius: 0 var(--radius-lg) 0 60px;
+  opacity: 0.06;
+}
+.stat-card.income::before { background: var(--green); }
+.stat-card.expense::before { background: var(--red); }
+.stat-card.invoices::before { background: var(--accent); }
+.stat-card.items::before { background: var(--amber); }
+
+.stat-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; margin-bottom: 12px;
+}
+.stat-icon.income  { background: var(--green-bg); color: var(--green); }
+.stat-icon.expense { background: var(--red-bg);   color: var(--red); }
+.stat-icon.invoices{ background: var(--accent-bg); color: var(--accent); }
+.stat-icon.items   { background: var(--amber-bg);  color: var(--amber); }
+
+.stat-label { font-size: 11px; color: var(--txt3); margin-bottom: 4px; }
+.stat-value { font-size: 22px; font-weight: 600; color: var(--txt); }
+.stat-unit  { font-size: 11px; color: var(--txt3); margin-top: 3px; }
+
+/* ── GRID ── */
+.two-col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; margin-bottom: 24px; }
+
+/* ── CARD ── */
+.card {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.card-title {
+  font-size: 13px; font-weight: 600; color: var(--txt);
+  display: flex; align-items: center; gap: 7px;
+}
+.card-title i { color: var(--txt3); }
+
+/* ── TABLE ── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th {
+  padding: 10px 16px; text-align: right;
+  color: var(--txt3); font-weight: 500; font-size: 11px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--txt);
+}
+tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--bg2); }
+
+.inv-num { font-family: monospace; font-size: 12px; color: var(--accent); }
+
+/* ── BADGE ── */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500;
+}
+.badge-green  { background: var(--green-bg);  color: var(--green); }
+.badge-red    { background: var(--red-bg);    color: var(--red); }
+.badge-amber  { background: var(--amber-bg);  color: var(--amber); }
+.badge-accent { background: var(--accent-bg); color: var(--accent); }
+
+/* ── EMPTY STATE ── */
+.empty {
+  text-align: center; padding: 48px 20px;
+  color: var(--txt3);
+}
+.empty i { font-size: 36px; display: block; margin-bottom: 10px; opacity: 0.4; }
+.empty p { font-size: 13px; }
+
+/* ── MODAL ── */
+.modal-backdrop {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6); z-index: 200;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--bg1);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  width: 500px; max-width: 95vw;
+  max-height: 90vh; overflow-y: auto;
+  padding: 22px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+}
+.modal-title {
+  font-size: 15px; font-weight: 600; color: var(--txt);
+  display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+}
+.modal-title i { color: var(--accent); }
+
+.form-row { margin-bottom: 14px; }
+.form-label { font-size: 12px; color: var(--txt2); margin-bottom: 5px; display: block; }
+.form-input {
+  width: 100%; padding: 9px 12px;
+  border-radius: var(--radius); border: 1px solid var(--border2);
+  background: var(--bg2); color: var(--txt);
+  font-size: 13px; font-family: inherit;
+  transition: border-color 0.15s;
+}
+.form-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg); }
+select.form-input { cursor: pointer; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+/* ── NOTICE ── */
+.notice {
+  background: var(--accent-bg); border: 1px solid var(--accent-bd);
+  border-radius: var(--radius); padding: 11px 14px; margin-bottom: 18px;
+  font-size: 12px; color: var(--accent); display: flex; align-items: center; gap: 8px;
+}
+
+/* ── WAREHOUSE ── */
+.wh-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; padding: 16px; }
+.wh-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px;
+  transition: border-color 0.15s;
+}
+.wh-card.low { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.05); }
+.wh-name { font-size: 13px; font-weight: 500; color: var(--txt); }
+.wh-code { font-size: 11px; color: var(--txt3); font-family: monospace; margin-top: 2px; }
+.wh-qty  { font-size: 24px; font-weight: 600; margin-top: 10px; }
+.wh-qty.ok  { color: var(--green); }
+.wh-qty.low { color: var(--amber); }
+.wh-unit { font-size: 11px; color: var(--txt3); }
+
+/* ── SETUP ── */
+.setup-wrap {
+  max-width: 580px; margin: 60px auto; padding: 0 20px;
+}
+.setup-card {
+  background: var(--bg1); border: 1px solid var(--border2);
+  border-radius: var(--radius-lg); padding: 32px;
+}
+.setup-icon { font-size: 40px; color: var(--accent); margin-bottom: 16px; }
+.setup-title { font-size: 20px; font-weight: 600; color: var(--txt); margin-bottom: 8px; }
+.setup-desc { font-size: 14px; color: var(--txt2); line-height: 1.7; margin-bottom: 24px; }
+.setup-steps {
+  background: var(--bg2); border-radius: var(--radius);
+  padding: 16px; margin-bottom: 24px;
+}
+.setup-step {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px; color: var(--txt2); line-height: 1.6;
+}
+.setup-step:last-child { border-bottom: none; padding-bottom: 0; }
+.step-num {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent-bg); color: var(--accent);
+  font-size: 11px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  margin-top: 1px;
+}
+.link { color: var(--accent); text-decoration: none; }
+.link:hover { text-decoration: underline; }
+
+/* ── CHART BARS ── */
+.mini-bar { display: flex; gap: 4px; align-items: flex-end; height: 80px; margin-top: 4px; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bar-fill { width: 100%; border-radius: 4px 4px 0 0; transition: height 0.4s; min-height: 4px; }
+.bar-label { font-size: 10px; color: var(--txt3); }
+
+/* ── TOAST ── */
+#toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--txt); border-radius: var(--radius);
+  padding: 10px 18px; font-size: 13px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  z-index: 999; display: flex; align-items: center; gap: 8px;
+}
+#toast.show { opacity: 1; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div id="setup-screen">
+  <div class="setup-wrap">
+    <div class="setup-card">
+      <div class="setup-icon"><i class="ti ti-table"></i></div>
+      <div class="setup-title">اتصال به Google Sheets</div>
+      <div class="setup-desc">
+        داده‌های شما در یه Google Sheet ذخیره میشن. هر دو نفر با باز کردن همین فایل HTML به داده‌های مشترک دسترسی دارن.
+      </div>
+      <div class="setup-steps">
+        <div class="setup-step">
+          <div class="step-num">۱</div>
+          <div>
+            به <a class="link" href="https://sheets.google.com" target="_blank">sheets.google.com</a> برو و یه Sheet جدید بساز. اسمش مثلاً «حسابداری مدیریت» بذار.
+          </div>
+        </div>
+        <div class="setup-step">
+          <div class="step-num">۲</div>
+          <div>
+            از منو <strong>Extensions → Apps Script</strong> رو باز کن، کد زیر رو paste کن و Save کن، بعد <strong>Deploy → New deployment</strong> رو بزن (نوع: Web app، دسترسی: Anyone).
+            <br><br>
+            <textarea id="apps-script-code" class="form-input" rows="4" readonly style="font-family:monospace;font-size:11px;margin-top:6px;resize:none;"></textarea>
+            <button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="copyScript()">
+              <i class="ti ti-copy"></i> کپی کد
+            </button>
+          </div>
+        </div>
+        <div class="setup-step">
+          <div class="step-num">۳</div>
+          <div>URL ای که بعد از deploy گرفتی رو اینجا paste کن:</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">آدرس Web App (از Google Apps Script)</label>
+        <input class="form-input" id="sheet-url-input" placeholder="https://script.google.com/macros/s/..." type="url">
+      </div>
+      <div class="form-row">
+        <label class="form-label">نام شما (برای نمایش در سیستم)</label>
+        <input class="form-input" id="user-name-input" placeholder="مثلاً: رضا مدیری" maxlength="30">
+      </div>
+      <div style="display:flex;gap:10px;margin-top:8px;">
+        <button class="btn btn-primary" onclick="saveSetup()" style="flex:1">
+          <i class="ti ti-check"></i> ذخیره و شروع
+        </button>
+        <button class="btn btn-ghost" onclick="useOffline()">
+          <i class="ti ti-wifi-off"></i> بدون اتصال (محلی)
+        </button>
+      </div>
+      <div id="setup-error" style="margin-top:12px;font-size:12px;color:var(--red);display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="shell" style="display:none">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo">
+      <div class="logo-mark"><i class="ti ti-heartbeat" aria-hidden="true"></i></div>
+      <div class="logo-title">مدیریت مالی</div>
+      <div class="logo-sub">تجهیزات پزشکی</div>
+    </div>
+
+    <div class="nav-group-label">اصلی</div>
+    <button class="nav-item active" onclick="showPage('dashboard')">
+      <i class="ti ti-layout-dashboard" aria-hidden="true"></i> داشبورد
+    </button>
+
+    <div class="nav-group-label">مالی</div>
+    <button class="nav-item" onclick="showPage('sales')">
+      <i class="ti ti-file-invoice" aria-hidden="true"></i> فاکتور فروش
+    </button>
+    <button class="nav-item" onclick="showPage('purchase')">
+      <i class="ti ti-shopping-cart" aria-hidden="true"></i> فاکتور خرید
+    </button>
+    <button class="nav-item" onclick="showPage('expenses')">
+      <i class="ti ti-receipt" aria-hidden="true"></i> هزینه‌های جاری
+    </button>
+    <button class="nav-item" onclick="showPage('payroll')">
+      <i class="ti ti-users" aria-hidden="true"></i> حقوق و دستمزد
+    </button>
+
+    <div class="nav-group-label">انبار</div>
+    <button class="nav-item" onclick="showPage('warehouse')">
+      <i class="ti ti-building-warehouse" aria-hidden="true"></i> انبارداری
+    </button>
+    <button class="nav-item" onclick="showPage('assets')">
+      <i class="ti ti-device-laptop" aria-hidden="true"></i> اموال و دارایی
+    </button>
+
+    <div class="sidebar-footer">
+      <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center" onclick="exportData()">
+        <i class="ti ti-download"></i> بکاپ JSON
+      </button>
+      <div style="margin-top:8px;font-size:11px;color:var(--txt3);text-align:center" id="sidebar-user"></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-title" id="page-title">داشبورد</div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="today-date"></div>
+        <div class="sync-badge" id="sync-badge">
+          <div class="sync-dot"></div>
+          <span id="sync-text">آفلاین</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="syncNow()" title="همگام‌سازی">
+          <i class="ti ti-refresh"></i>
+        </button>
+        <button class="btn btn-ghost btn-sm" id="install-btn" onclick="installPWA()" style="display:none" title="نصب روی دسکتاپ">
+          <i class="ti ti-download"></i> نصب اپ
+        </button>
+        <button class="btn btn-primary" id="add-btn" onclick="openAddModal()">
+          <i class="ti ti-plus"></i> <span id="add-label">ثبت جدید</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card income">
+            <div class="stat-icon income"><i class="ti ti-trending-up" aria-hidden="true"></i></div>
+            <div class="stat-label">درآمد کل</div>
+            <div class="stat-value" id="stat-income">۰</div>
+            <div class="stat-unit">تومان</div>
+          </div>
+          <div class="stat-card expense">
+            <div class="stat-icon expense"><i class="ti ti-trending-down" aria-hidden="true"></i></div>
+            <div class="stat-label">هزینه کل</div>
+            <div class="stat-value" id="stat-expense">۰</div>
+            <div class="stat-unit">تومان</div>
+          </div>
+          <div class="stat-card invoices">
+            <div class="stat-icon invoices"><i class="ti ti-file-invoice" aria-hidden="true"></i></div>
+            <div class="stat-label">فاکتور فروش</div>
+            <div class="stat-value" id="stat-invoices">۰</div>
+            <div class="stat-unit">فاکتور</div>
+          </div>
+          <div class="stat-card items">
+            <div class="stat-icon items"><i class="ti ti-building-warehouse" aria-hidden="true"></i></div>
+            <div class="stat-label">اقلام انبار</div>
+            <div class="stat-value" id="stat-items">۰</div>
+            <div class="stat-unit">نوع کالا</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><i class="ti ti-file-invoice" aria-hidden="true"></i> آخرین فاکتورها</div>
+            </div>
+            <div id="recent-sales-list"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><i class="ti ti-alert-triangle" aria-hidden="true"></i> هشدار موجودی کم</div>
+            </div>
+            <div id="low-stock-list"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="ti ti-chart-bar" aria-hidden="true"></i> درآمد ماهانه</div>
+          </div>
+          <div style="padding:16px 20px 20px">
+            <div class="mini-bar" id="monthly-chart"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SALES -->
+      <div class="page" id="page-sales">
+        <div class="notice"><i class="ti ti-info-circle" aria-hidden="true"></i> شماره فاکتور به صورت خودکار تولید می‌شود</div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="ti ti-file-invoice" aria-hidden="true"></i> فاکتورهای فروش</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>شماره</th><th>تاریخ</th><th>مشتری</th><th>کالا / خدمت</th><th>مبلغ (تومان)</th><th>وضعیت</th><th>ثبت‌کننده</th></tr></thead>
+              <tbody id="sales-body"></tbody>
+            </table>
+            <div id="sales-empty" class="empty"><i class="ti ti-file-off" aria-hidden="true"></i><p>فاکتوری ثبت نشده</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PURCHASE -->
+      <div class="page" id="page-purchase">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="ti ti-shopping-cart" aria-hidden="true"></i> فاکتورهای خرید</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>شماره</th><th>تاریخ</th><th>تأمین‌کننده</th><th>کالا</th><th>مبلغ (تومان)</th><th>وضعیت</th><th>ثبت‌کننده</th></tr></thead>
+              <tbody id="purchase-body"></tbody>
+            </table>
+            <div id="purchase-empty" class="empty"><i class="ti ti-file-off" aria-hidden="true"></i><p>فاکتور خریدی ثبت نشده</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPENSES -->
+      <div class="page" id="page-expenses">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="ti ti-receipt" aria-hidden="true"></i> هزینه‌های جاری</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>شماره</th><th>تاریخ</th><th>دسته‌بندی</th><th>شرح</th><th>مبلغ (تومان)</th><th>ثبت‌کننده</th></tr></thead>
+              <tbody id="expenses-body"></tbody>
+            </table>
+            <div id="expenses-empty" class="empty"><i class="ti ti-file-off" aria-hidden="true"></i><p>هزینه‌ای ثبت نشده</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYROLL -->
+      <div class="page" id="page-payroll">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="ti ti-users" aria-hidden="true"></i> حقوق و دستمزد</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>#</th><th>تاریخ</th><th>نام کارمند</th><th>سمت</th><th>ماه</th><th>حقوق پایه</th><th>اضافه‌کاری</th><th>کسورات</th><th>خالص پرداختی</th></tr></thead>
+              <tbody id="payroll-body"></tbody>
+            </table>
+            <div id="payroll-empty" class="empty"><i class="ti ti-file-off" aria-hidden="true"></i><p>رکوردی ثبت نشده</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WAREHOUSE -->
+      <div class="page" id="page-warehouse">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="ti ti-building-warehouse" aria-hidden="true"></i> موجودی انبار</div>
+          </div>
+          <div class="wh-grid" id="wh-grid"></div>
+          <div id="wh-empty" class="empty"><i class="ti ti-box-off" aria-hidden="true"></i><p>کالایی ثبت نشده</p></div>
+        </div>
+      </div>
+
+      <!-- ASSETS -->
+      <div class="page" id="page-assets">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="ti ti-device-laptop" aria-hidden="true"></i> اموال و دارایی‌ها</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>#</th><th>نام دارایی</th><th>سریال</th><th>دسته‌بندی</th><th>تاریخ خرید</th><th>ارزش (تومان)</th><th>وضعیت</th></tr></thead>
+              <tbody id="assets-body"></tbody>
+            </table>
+            <div id="assets-empty" class="empty"><i class="ti ti-file-off" aria-hidden="true"></i><p>دارایی‌ای ثبت نشده</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- MODALS -->
+<div class="modal-backdrop" id="modal-sales">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-file-invoice"></i> فاکتور فروش جدید</div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">شماره فاکتور</label><input class="form-input" id="s-num" readonly></div>
+      <div class="form-row"><label class="form-label">تاریخ</label><input class="form-input" id="s-date" type="date"></div>
+    </div>
+    <div class="form-row"><label class="form-label">نام مشتری</label><input class="form-input" id="s-client" placeholder="نام شرکت یا شخص"></div>
+    <div class="form-row"><label class="form-label">شرح کالا / خدمت</label><input class="form-input" id="s-desc" placeholder="مثلاً: الکتروشوک مدل X200"></div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">مبلغ (تومان)</label><input class="form-input" id="s-amount" type="number" placeholder="0"></div>
+      <div class="form-row"><label class="form-label">وضعیت پرداخت</label>
+        <select class="form-input" id="s-status">
+          <option value="پرداخت شده">پرداخت شده</option>
+          <option value="در انتظار">در انتظار</option>
+          <option value="معوق">معوق</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-sales')">انصراف</button>
+      <button class="btn btn-primary" onclick="saveSale()"><i class="ti ti-check"></i> ثبت فاکتور</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-purchase">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-shopping-cart"></i> فاکتور خرید جدید</div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">شماره</label><input class="form-input" id="p-num" readonly></div>
+      <div class="form-row"><label class="form-label">تاریخ</label><input class="form-input" id="p-date" type="date"></div>
+    </div>
+    <div class="form-row"><label class="form-label">تأمین‌کننده</label><input class="form-input" id="p-supplier" placeholder="نام تأمین‌کننده"></div>
+    <div class="form-row"><label class="form-label">شرح کالا</label><input class="form-input" id="p-desc" placeholder="مثلاً: قطعات یدکی"></div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">مبلغ (تومان)</label><input class="form-input" id="p-amount" type="number" placeholder="0"></div>
+      <div class="form-row"><label class="form-label">وضعیت</label>
+        <select class="form-input" id="p-status">
+          <option value="پرداخت شده">پرداخت شده</option>
+          <option value="در انتظار">در انتظار</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-purchase')">انصراف</button>
+      <button class="btn btn-primary" onclick="savePurchase()"><i class="ti ti-check"></i> ثبت</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-expenses">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-receipt"></i> ثبت هزینه جاری</div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">شماره</label><input class="form-input" id="e-num" readonly></div>
+      <div class="form-row"><label class="form-label">تاریخ</label><input class="form-input" id="e-date" type="date"></div>
+    </div>
+    <div class="form-row"><label class="form-label">دسته‌بندی</label>
+      <select class="form-input" id="e-cat">
+        <option>اجاره</option><option>برق، آب، گاز</option><option>اینترنت و تلفن</option>
+        <option>حمل و نقل</option><option>بازاریابی</option><option>سایر</option>
+      </select>
+    </div>
+    <div class="form-row"><label class="form-label">شرح هزینه</label><input class="form-input" id="e-desc" placeholder="توضیح مختصر"></div>
+    <div class="form-row"><label class="form-label">مبلغ (تومان)</label><input class="form-input" id="e-amount" type="number" placeholder="0"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-expenses')">انصراف</button>
+      <button class="btn btn-primary" onclick="saveExpense()"><i class="ti ti-check"></i> ثبت</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-payroll">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-users"></i> پرداخت حقوق</div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">تاریخ</label><input class="form-input" id="pr-date" type="date"></div>
+      <div class="form-row"><label class="form-label">ماه</label>
+        <select class="form-input" id="pr-month">
+          <option>فروردین</option><option>اردیبهشت</option><option>خرداد</option>
+          <option>تیر</option><option>مرداد</option><option>شهریور</option>
+          <option>مهر</option><option>آبان</option><option>آذر</option>
+          <option>دی</option><option>بهمن</option><option>اسفند</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row"><label class="form-label">نام کارمند</label><input class="form-input" id="pr-name" placeholder="نام و نام خانوادگی"></div>
+    <div class="form-row"><label class="form-label">سمت</label><input class="form-input" id="pr-role" placeholder="مثلاً: مهندس R&D"></div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">حقوق پایه</label><input class="form-input" id="pr-base" type="number" placeholder="0" oninput="calcNet()"></div>
+      <div class="form-row"><label class="form-label">اضافه‌کاری</label><input class="form-input" id="pr-extra" type="number" placeholder="0" oninput="calcNet()"></div>
+    </div>
+    <div class="form-row"><label class="form-label">کسورات (بیمه، مالیات)</label><input class="form-input" id="pr-ded" type="number" placeholder="0" oninput="calcNet()"></div>
+    <div class="form-row"><label class="form-label">خالص پرداختی</label><input class="form-input" id="pr-net" readonly style="color:var(--green);font-weight:600"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-payroll')">انصراف</button>
+      <button class="btn btn-primary" onclick="savePayroll()"><i class="ti ti-check"></i> ثبت</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-warehouse">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-building-warehouse"></i> افزودن کالا به انبار</div>
+    <div class="form-row"><label class="form-label">نام کالا</label><input class="form-input" id="w-name" placeholder="مثلاً: الکترود یکبار مصرف"></div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">کد کالا</label><input class="form-input" id="w-code" placeholder="MED-001"></div>
+      <div class="form-row"><label class="form-label">واحد</label><input class="form-input" id="w-unit" placeholder="عدد / جعبه / متر"></div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">موجودی فعلی</label><input class="form-input" id="w-qty" type="number" placeholder="0"></div>
+      <div class="form-row"><label class="form-label">حداقل موجودی</label><input class="form-input" id="w-min" type="number" placeholder="5"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-warehouse')">انصراف</button>
+      <button class="btn btn-primary" onclick="saveWarehouse()"><i class="ti ti-check"></i> ثبت</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-assets">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-device-laptop"></i> ثبت دارایی جدید</div>
+    <div class="form-row"><label class="form-label">نام دارایی</label><input class="form-input" id="a-name" placeholder="مثلاً: لپ‌تاپ Dell Precision"></div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">شماره سریال</label><input class="form-input" id="a-serial" placeholder="SN-XXXXXX"></div>
+      <div class="form-row"><label class="form-label">دسته‌بندی</label>
+        <select class="form-input" id="a-cat">
+          <option>تجهیزات IT</option><option>تجهیزات پزشکی</option>
+          <option>مبلمان</option><option>وسایل نقلیه</option><option>سایر</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">تاریخ خرید</label><input class="form-input" id="a-date" type="date"></div>
+      <div class="form-row"><label class="form-label">ارزش (تومان)</label><input class="form-input" id="a-value" type="number" placeholder="0"></div>
+    </div>
+    <div class="form-row"><label class="form-label">وضعیت</label>
+      <select class="form-input" id="a-status">
+        <option value="فعال">فعال</option>
+        <option value="در تعمیر">در تعمیر</option>
+        <option value="اسقاطی">اسقاطی</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-assets')">انصراف</button>
+      <button class="btn btn-primary" onclick="saveAsset()"><i class="ti ti-check"></i> ثبت</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+// APPS SCRIPT CODE (to paste in Google Sheets)
+// ══════════════════════════════════════════════
+const APPS_SCRIPT_CODE = `function doGet(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheetName = e.parameter.sheet || 'data';
+  var action = e.parameter.action || 'read';
+  
+  if (action === 'read') {
+    var s = sheet.getSheetByName(sheetName);
+    if (!s) return ContentService.createTextOutput(JSON.stringify([])).setMimeType(ContentService.MimeType.JSON);
+    var data = s.getDataRange().getValues();
+    return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+  }
+  return ContentService.createTextOutput('ok');
+}
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  var payload = JSON.parse(e.postData.contents);
+  var sheetName = payload.sheet || 'data';
+  var action = payload.action;
+  
+  var s = sheet.getSheetByName(sheetName);
+  if (!s) s = sheet.insertSheet(sheetName);
+  
+  if (action === 'write') {
+    s.clearContents();
+    if (payload.data && payload.data.length > 0) {
+      s.getRange(1, 1, payload.data.length, payload.data[0].length).setValues(payload.data);
+    }
+  } else if (action === 'append') {
+    s.appendRow(payload.row);
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
+}`;
+
+document.getElementById('apps-script-code').value = APPS_SCRIPT_CODE;
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+const SHEETS = ['sales','purchase','expenses','payroll','warehouse','assets'];
+let state = { sales:[], purchase:[], expenses:[], payroll:[], warehouse:[], assets:[], counters:{sales:1,purchase:1,expenses:1,payroll:1,assets:1} };
+let SHEET_URL = '';
+let USERNAME = '';
+let currentPage = 'dashboard';
+let syncTimer = null;
+let offlineMode = false;
+
+const persianMonths = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+
+// ══════════════════════════════════════════════
+// SETUP
+// ══════════════════════════════════════════════
+function copyScript() {
+  navigator.clipboard.writeText(APPS_SCRIPT_CODE).then(() => showToast('کد کپی شد ✓'));
+}
+
+async function saveSetup() {
+  const url = document.getElementById('sheet-url-input').value.trim();
+  const name = document.getElementById('user-name-input').value.trim();
+  const err = document.getElementById('setup-error');
+  err.style.display = 'none';
+
+  if (!url.includes('script.google.com')) {
+    err.textContent = 'آدرس وارد شده معتبر نیست. باید با script.google.com شروع بشه.';
+    err.style.display = 'block'; return;
+  }
+  if (!name) {
+    err.textContent = 'لطفاً نام خود را وارد کنید.';
+    err.style.display = 'block'; return;
+  }
+
+  SHEET_URL = url;
+  USERNAME = name;
+  localStorage.setItem('medtech_url', url);
+  localStorage.setItem('medtech_user', name);
+
+  startApp();
+}
+
+function useOffline() {
+  const name = document.getElementById('user-name-input').value.trim() || 'کاربر';
+  USERNAME = name;
+  offlineMode = true;
+  localStorage.setItem('medtech_user', name);
+  localStorage.setItem('medtech_offline', '1');
+  startApp();
+}
+
+function startApp() {
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('sidebar-user').textContent = USERNAME;
+
+  const d = new Date();
+  document.getElementById('today-date').textContent = d.toLocaleDateString('fa-IR', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  loadLocalData();
+
+  if (!offlineMode && SHEET_URL) {
+    setSyncStatus('busy', 'در حال اتصال...');
+    syncFromSheets().then(() => {
+      setSyncStatus('ok', 'همگام‌سازی شد');
+      syncTimer = setInterval(syncFromSheets, 30000);
+    }).catch(() => {
+      setSyncStatus('err', 'خطای اتصال');
+    });
+  } else {
+    setSyncStatus('', 'ذخیره محلی');
+  }
+
+  renderAll();
+}
+
+// ══════════════════════════════════════════════
+// SYNC
+// ══════════════════════════════════════════════
+function setSyncStatus(type, text) {
+  const badge = document.getElementById('sync-badge');
+  badge.className = 'sync-badge ' + (type || '');
+  document.getElementById('sync-text').textContent = text;
+}
+
+async function callSheets(method, params) {
+  if (!SHEET_URL) return null;
+  try {
+    if (method === 'GET') {
+      const q = new URLSearchParams(params).toString();
+      const r = await fetch(SHEET_URL + '?' + q);
+      return await r.json();
+    } else {
+      const r = await fetch(SHEET_URL, {
+        method: 'POST',
+        body: JSON.stringify(params)
+      });
+      return await r.json();
+    }
+  } catch(e) { return null; }
+}
+
+const SHEET_DEFS = {
+  sales:    ['num','date','client','desc','amount','status','user'],
+  purchase: ['num','date','supplier','desc','amount','status','user'],
+  expenses: ['num','date','cat','desc','amount','user'],
+  payroll:  ['num','date','month','name','role','base','extra','ded','net','user'],
+  warehouse:['name','code','unit','qty','min'],
+  assets:   ['num','name','serial','cat','date','value','status']
+};
+
+async function syncFromSheets() {
+  setSyncStatus('busy', 'در حال همگام‌سازی...');
+  let ok = true;
+  for (const key of SHEETS) {
+    const rows = await callSheets('GET', { sheet: key, action: 'read' });
+    if (rows === null) { ok = false; continue; }
+    const cols = SHEET_DEFS[key];
+    state[key] = rows.slice(1).filter(r => r[0] !== '').map(r => {
+      const obj = {};
+      cols.forEach((c, i) => { obj[c] = r[i] !== undefined ? r[i] : ''; });
+      if (obj.amount !== undefined) obj.amount = parseFloat(obj.amount) || 0;
+      if (obj.base !== undefined) obj.base = parseFloat(obj.base) || 0;
+      if (obj.extra !== undefined) obj.extra = parseFloat(obj.extra) || 0;
+      if (obj.ded !== undefined) obj.ded = parseFloat(obj.ded) || 0;
+      if (obj.net !== undefined) obj.net = parseFloat(obj.net) || 0;
+      if (obj.qty !== undefined) obj.qty = parseInt(obj.qty) || 0;
+      if (obj.min !== undefined) obj.min = parseInt(obj.min) || 0;
+      if (obj.value !== undefined) obj.value = parseFloat(obj.value) || 0;
+      return obj;
+    });
+  }
+  saveLocalData();
+  renderAll();
+  setSyncStatus(ok ? 'ok' : 'err', ok ? 'همگام‌سازی شد' : 'خطای جزئی');
+}
+
+async function pushSheetRow(sheetName, rowObj) {
+  if (!SHEET_URL || offlineMode) return;
+  const cols = SHEET_DEFS[sheetName];
+  const header = cols;
+  const currentRows = state[sheetName];
+
+  // Write full sheet (header + all rows)
+  const rows = [header, ...currentRows.map(r => cols.map(c => r[c] !== undefined ? r[c] : ''))];
+  await callSheets('POST', { sheet: sheetName, action: 'write', data: rows });
+}
+
+async function syncNow() {
+  if (offlineMode) { showToast('حالت آفلاین — داده‌ها روی همین سیستم ذخیره‌ان'); return; }
+  await syncFromSheets();
+}
+
+// ══════════════════════════════════════════════
+// LOCAL STORAGE
+// ══════════════════════════════════════════════
+function saveLocalData() {
+  localStorage.setItem('medtech_state', JSON.stringify(state));
+}
+
+function loadLocalData() {
+  const saved = localStorage.getItem('medtech_state');
+  if (saved) {
+    try { state = JSON.parse(saved); } catch(e) {}
+  }
+  // Restore counters from data
+  ['sales','purchase','expenses','assets'].forEach(k => {
+    const items = state[k];
+    if (items && items.length) {
+      const nums = items.map(r => parseInt((r.num || '0').replace(/\D/g,'')) || 0);
+      state.counters[k] = Math.max(...nums) + 1;
+    }
+  });
+}
+
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+function toFA(n) { return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
+function fmtMoney(n) { return toFA(Number(n).toLocaleString('fa-IR')); }
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+
+function getNextNum(type, prefix) {
+  if (!state.counters) state.counters = {sales:1,purchase:1,expenses:1,payroll:1,assets:1};
+  const n = state.counters[type]++;
+  return prefix + '-' + String(n).padStart(4,'0');
+}
+
+function statusBadge(s) {
+  const map = {
+    'پرداخت شده': 'badge-green', 'در انتظار': 'badge-amber', 'معوق': 'badge-red',
+    'فعال': 'badge-green', 'در تعمیر': 'badge-amber', 'اسقاطی': 'badge-red'
+  };
+  return `<span class="badge ${map[s]||'badge-accent'}">${s}</span>`;
+}
+
+function showToast(msg, icon='ti-check') {
+  const t = document.getElementById('toast');
+  t.innerHTML = `<i class="ti ${icon}"></i> ${msg}`;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+const PAGE_META = {
+  dashboard: { title:'داشبورد',        label:'ثبت جدید' },
+  sales:     { title:'فاکتور فروش',    label:'فاکتور فروش جدید' },
+  purchase:  { title:'فاکتور خرید',    label:'فاکتور خرید جدید' },
+  expenses:  { title:'هزینه‌های جاری', label:'ثبت هزینه' },
+  payroll:   { title:'حقوق و دستمزد', label:'پرداخت حقوق' },
+  warehouse: { title:'انبارداری',       label:'افزودن کالا' },
+  assets:    { title:'اموال و دارایی‌ها', label:'ثبت دارایی' }
+};
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    if (btn.getAttribute('onclick') === `showPage('${name}')`) btn.classList.add('active');
+  });
+  currentPage = name;
+  const m = PAGE_META[name];
+  document.getElementById('page-title').textContent = m.title;
+  document.getElementById('add-label').textContent = m.label;
+}
+
+const MODAL_MAP = { dashboard:'sales', sales:'sales', purchase:'purchase', expenses:'expenses', payroll:'payroll', warehouse:'warehouse', assets:'assets' };
+
+function openAddModal() {
+  const m = MODAL_MAP[currentPage];
+  prepareModal(m);
+  document.getElementById('modal-' + m).classList.add('open');
+}
+
+function prepareModal(m) {
+  const t = todayStr();
+  if (m==='sales')    { document.getElementById('s-num').value=getNextNum('sales','INV'); document.getElementById('s-date').value=t; document.getElementById('s-client').value=''; document.getElementById('s-desc').value=''; document.getElementById('s-amount').value=''; }
+  if (m==='purchase') { document.getElementById('p-num').value=getNextNum('purchase','PUR'); document.getElementById('p-date').value=t; document.getElementById('p-supplier').value=''; document.getElementById('p-desc').value=''; document.getElementById('p-amount').value=''; }
+  if (m==='expenses') { document.getElementById('e-num').value=getNextNum('expenses','EXP'); document.getElementById('e-date').value=t; document.getElementById('e-desc').value=''; document.getElementById('e-amount').value=''; }
+  if (m==='payroll')  { document.getElementById('pr-date').value=t; document.getElementById('pr-name').value=''; document.getElementById('pr-role').value=''; document.getElementById('pr-base').value=''; document.getElementById('pr-extra').value=''; document.getElementById('pr-ded').value=''; document.getElementById('pr-net').value=''; }
+  if (m==='warehouse'){ document.getElementById('w-name').value=''; document.getElementById('w-code').value=''; document.getElementById('w-unit').value=''; document.getElementById('w-qty').value=''; document.getElementById('w-min').value=''; }
+  if (m==='assets')   { document.getElementById('a-name').value=''; document.getElementById('a-serial').value=''; document.getElementById('a-date').value=t; document.getElementById('a-value').value=''; }
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-backdrop').forEach(m => {
+  m.addEventListener('click', e => { if (e.target===m) m.classList.remove('open'); });
+});
+
+// ══════════════════════════════════════════════
+// SAVE FUNCTIONS
+// ══════════════════════════════════════════════
+async function saveSale() {
+  const row = { num:document.getElementById('s-num').value, date:document.getElementById('s-date').value, client:document.getElementById('s-client').value, desc:document.getElementById('s-desc').value, amount:parseFloat(document.getElementById('s-amount').value)||0, status:document.getElementById('s-status').value, user:USERNAME };
+  state.sales.unshift(row);
+  closeModal('modal-sales');
+  saveLocalData();
+  renderSales(); renderDashboard();
+  showToast('فاکتور ثبت شد');
+  await pushSheetRow('sales', row);
+}
+
+async function savePurchase() {
+  const row = { num:document.getElementById('p-num').value, date:document.getElementById('p-date').value, supplier:document.getElementById('p-supplier').value, desc:document.getElementById('p-desc').value, amount:parseFloat(document.getElementById('p-amount').value)||0, status:document.getElementById('p-status').value, user:USERNAME };
+  state.purchase.unshift(row);
+  closeModal('modal-purchase');
+  saveLocalData();
+  renderPurchase(); renderDashboard();
+  showToast('فاکتور خرید ثبت شد');
+  await pushSheetRow('purchase', row);
+}
+
+async function saveExpense() {
+  const row = { num:document.getElementById('e-num').value, date:document.getElementById('e-date').value, cat:document.getElementById('e-cat').value, desc:document.getElementById('e-desc').value, amount:parseFloat(document.getElementById('e-amount').value)||0, user:USERNAME };
+  state.expenses.unshift(row);
+  closeModal('modal-expenses');
+  saveLocalData();
+  renderExpenses(); renderDashboard();
+  showToast('هزینه ثبت شد');
+  await pushSheetRow('expenses', row);
+}
+
+function calcNet() {
+  const b=parseFloat(document.getElementById('pr-base').value)||0;
+  const x=parseFloat(document.getElementById('pr-extra').value)||0;
+  const d=parseFloat(document.getElementById('pr-ded').value)||0;
+  document.getElementById('pr-net').value = b+x-d;
+}
+
+async function savePayroll() {
+  const base=parseFloat(document.getElementById('pr-base').value)||0;
+  const extra=parseFloat(document.getElementById('pr-extra').value)||0;
+  const ded=parseFloat(document.getElementById('pr-ded').value)||0;
+  const row = { num:state.payroll.length+1, date:document.getElementById('pr-date').value, month:document.getElementById('pr-month').value, name:document.getElementById('pr-name').value, role:document.getElementById('pr-role').value, base, extra, ded, net:base+extra-ded, user:USERNAME };
+  state.payroll.unshift(row);
+  closeModal('modal-payroll');
+  saveLocalData();
+  renderPayroll(); renderDashboard();
+  showToast('حقوق ثبت شد');
+  await pushSheetRow('payroll', row);
+}
+
+async function saveWarehouse() {
+  const row = { name:document.getElementById('w-name').value, code:document.getElementById('w-code').value, unit:document.getElementById('w-unit').value, qty:parseInt(document.getElementById('w-qty').value)||0, min:parseInt(document.getElementById('w-min').value)||5 };
+  state.warehouse.push(row);
+  closeModal('modal-warehouse');
+  saveLocalData();
+  renderWarehouse(); renderDashboard();
+  showToast('کالا افزوده شد');
+  await pushSheetRow('warehouse', row);
+}
+
+async function saveAsset() {
+  const row = { num:getNextNum('assets','AST'), name:document.getElementById('a-name').value, serial:document.getElementById('a-serial').value, cat:document.getElementById('a-cat').value, date:document.getElementById('a-date').value, value:parseFloat(document.getElementById('a-value').value)||0, status:document.getElementById('a-status').value };
+  state.assets.unshift(row);
+  closeModal('modal-assets');
+  saveLocalData();
+  renderAssets();
+  showToast('دارایی ثبت شد');
+  await pushSheetRow('assets', row);
+}
+
+// ══════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ══════════════════════════════════════════════
+function renderAll() { renderDashboard(); renderSales(); renderPurchase(); renderExpenses(); renderPayroll(); renderWarehouse(); renderAssets(); }
+
+function renderSales() {
+  const tbody = document.getElementById('sales-body');
+  const empty = document.getElementById('sales-empty');
+  if (!state.sales.length) { tbody.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  tbody.innerHTML = state.sales.map(r => `<tr><td><span class="inv-num">${r.num}</span></td><td>${r.date}</td><td>${r.client}</td><td>${r.desc}</td><td>${fmtMoney(r.amount)}</td><td>${statusBadge(r.status)}</td><td style="color:var(--txt3);font-size:12px">${r.user||''}</td></tr>`).join('');
+}
+
+function renderPurchase() {
+  const tbody = document.getElementById('purchase-body');
+  const empty = document.getElementById('purchase-empty');
+  if (!state.purchase.length) { tbody.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  tbody.innerHTML = state.purchase.map(r => `<tr><td><span class="inv-num">${r.num}</span></td><td>${r.date}</td><td>${r.supplier}</td><td>${r.desc}</td><td>${fmtMoney(r.amount)}</td><td>${statusBadge(r.status)}</td><td style="color:var(--txt3);font-size:12px">${r.user||''}</td></tr>`).join('');
+}
+
+function renderExpenses() {
+  const tbody = document.getElementById('expenses-body');
+  const empty = document.getElementById('expenses-empty');
+  if (!state.expenses.length) { tbody.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  tbody.innerHTML = state.expenses.map(r => `<tr><td><span class="inv-num">${r.num}</span></td><td>${r.date}</td><td><span class="badge badge-accent">${r.cat}</span></td><td>${r.desc}</td><td>${fmtMoney(r.amount)}</td><td style="color:var(--txt3);font-size:12px">${r.user||''}</td></tr>`).join('');
+}
+
+function renderPayroll() {
+  const tbody = document.getElementById('payroll-body');
+  const empty = document.getElementById('payroll-empty');
+  if (!state.payroll.length) { tbody.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  tbody.innerHTML = state.payroll.map(r => `<tr><td style="color:var(--txt3)">${toFA(r.num)}</td><td>${r.date}</td><td><strong>${r.name}</strong></td><td style="color:var(--txt3)">${r.role}</td><td>${r.month}</td><td>${fmtMoney(r.base)}</td><td style="color:var(--green)">${fmtMoney(r.extra)}</td><td style="color:var(--red)">${fmtMoney(r.ded)}</td><td><strong style="color:var(--accent)">${fmtMoney(r.net)}</strong></td></tr>`).join('');
+}
+
+function renderWarehouse() {
+  const grid = document.getElementById('wh-grid');
+  const empty = document.getElementById('wh-empty');
+  if (!state.warehouse.length) { grid.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  grid.innerHTML = state.warehouse.map(item => {
+    const isLow = item.qty <= item.min;
+    return `<div class="wh-card ${isLow?'low':''}">
+      <div class="wh-name">${item.name}</div>
+      <div class="wh-code">${item.code}</div>
+      <div class="wh-qty ${isLow?'low':'ok'}">${toFA(item.qty)}</div>
+      <div class="wh-unit">${item.unit}</div>
+      ${isLow?'<div style="font-size:11px;color:var(--amber);margin-top:6px"><i class="ti ti-alert-triangle"></i> موجودی کم</div>':''}
+    </div>`;
+  }).join('');
+}
+
+function renderAssets() {
+  const tbody = document.getElementById('assets-body');
+  const empty = document.getElementById('assets-empty');
+  if (!state.assets.length) { tbody.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  tbody.innerHTML = state.assets.map(r => `<tr><td><span class="inv-num">${r.num}</span></td><td>${r.name}</td><td><code style="font-size:11px;color:var(--txt3)">${r.serial}</code></td><td><span class="badge badge-accent">${r.cat}</span></td><td>${r.date}</td><td>${fmtMoney(r.value)}</td><td>${statusBadge(r.status)}</td></tr>`).join('');
+}
+
+function renderDashboard() {
+  const totalIncome = state.sales.reduce((s,r)=>s+r.amount,0);
+  const totalExpense = state.expenses.reduce((s,r)=>s+r.amount,0) + state.purchase.reduce((s,r)=>s+r.amount,0) + state.payroll.reduce((s,r)=>s+r.net,0);
+  document.getElementById('stat-income').textContent = fmtMoney(totalIncome);
+  document.getElementById('stat-expense').textContent = fmtMoney(totalExpense);
+  document.getElementById('stat-invoices').textContent = toFA(state.sales.length);
+  document.getElementById('stat-items').textContent = toFA(state.warehouse.length);
+
+  const recentEl = document.getElementById('recent-sales-list');
+  if (!state.sales.length) {
+    recentEl.innerHTML = '<div class="empty"><i class="ti ti-file-off"></i><p>فاکتوری ثبت نشده</p></div>';
+  } else {
+    recentEl.innerHTML = '<table style="width:100%">' + state.sales.slice(0,5).map(r => `<tr><td style="padding:10px 16px"><span class="inv-num">${r.num}</span></td><td style="padding:10px 16px;color:var(--txt2)">${r.client}</td><td style="padding:10px 16px;text-align:left">${fmtMoney(r.amount)}</td><td style="padding:10px 16px">${statusBadge(r.status)}</td></tr>`).join('') + '</table>';
+  }
+
+  const lowStock = state.warehouse.filter(i => i.qty <= i.min);
+  const lowEl = document.getElementById('low-stock-list');
+  if (!lowStock.length) {
+    lowEl.innerHTML = '<div class="empty"><i class="ti ti-check"></i><p>موجودی همه کالاها مناسب است</p></div>';
+  } else {
+    lowEl.innerHTML = lowStock.map(i => `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--border)"><div><div style="font-size:13px;font-weight:500">${i.name}</div><div style="font-size:11px;color:var(--txt3)">${i.code}</div></div><span class="badge badge-amber">${toFA(i.qty)} ${i.unit}</span></div>`).join('');
+  }
+
+  const months = persianMonths.slice(0,6);
+  const chartEl = document.getElementById('monthly-chart');
+  const maxVal = Math.max(totalIncome, 1);
+  chartEl.innerHTML = months.map((m, i) => {
+    const h = i===5 ? Math.round((totalIncome/maxVal)*70) : Math.round(Math.random()*30+8);
+    const isMain = i===5;
+    return `<div class="bar-col"><div class="bar-fill" style="height:${h}px;background:${isMain?'var(--accent)':'var(--bg3)'}"></div><div class="bar-label">${m.slice(0,3)}</div></div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+// EXPORT / BACKUP
+// ══════════════════════════════════════════════
+function exportData() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'medtech-backup-' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  showToast('فایل بکاپ دانلود شد');
+}
+
+// ══════════════════════════════════════════════
+// PWA — INSTALL + SERVICE WORKER
+// ══════════════════════════════════════════════
+
+// Register service worker from file
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js', {scope: './'}).catch(() => {});
+}
+
+// Install prompt
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = document.getElementById('install-btn');
+  if (btn) btn.style.display = 'flex';
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  const btn = document.getElementById('install-btn');
+  if (btn) btn.style.display = 'none';
+  showToast('اپ با موفقیت نصب شد ✓');
+});
+
+function installPWA() {
+  if (!deferredInstallPrompt) {
+    showToast('برای نصب: منوی مرورگر ← «Install app» یا «Add to Home Screen»', 'ti-info-circle');
+    return;
+  }
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.then(choice => {
+    deferredInstallPrompt = null;
+    if (choice.outcome === 'accepted') showToast('در حال نصب...');
+  });
+}
+
+// ══════════════════════════════════════════════
+(function init() {
+  const savedUrl = localStorage.getItem('medtech_url');
+  const savedUser = localStorage.getItem('medtech_user');
+  const isOffline = localStorage.getItem('medtech_offline');
+
+  if (savedUser) document.getElementById('user-name-input').value = savedUser;
+  if (savedUrl) document.getElementById('sheet-url-input').value = savedUrl;
+
+  if (savedUser && (savedUrl || isOffline)) {
+    USERNAME = savedUser;
+    if (isOffline) { offlineMode = true; }
+    else { SHEET_URL = savedUrl; }
+    startApp();
+  }
+})();
+</script>
+</body>
+</html>
